@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home</title>
+<title>Gamer Bank - Home</title>
 
 <link rel="stylesheet" href="css/style.css">
 </head>
@@ -14,16 +14,14 @@
 
   <div class="card">
 
-    <!-- FOTO -->
+    <!-- HEADER -->
     <div class="user-header">
-  <img id="foto" class="foto">
-  <h2 id="userNome"></h2>
+      <img id="foto" class="foto">
+      <div>
+        <h2 id="userNome"></h2>
+        <p id="igg"></p>
+      </div>
     </div>
-    <!-- NOME -->
-    <h2 id="userNome"></h2>
-
-    <!-- IGG -->
-    <p id="igg"></p>
 
     <!-- CARTÃO -->
     <div class="cartao">
@@ -31,26 +29,38 @@
     </div>
 
     <!-- DATA -->
-    <p id="data"></p>
+    <p class="data" id="data"></p>
 
     <!-- SALDO -->
     <h3>Saldo: <span id="saldo">0</span> WUP</h3>
 
+    <!-- INPUT -->
     <input type="number" id="valor" placeholder="Valor">
 
+    <!-- AÇÕES -->
     <button class="btn" onclick="depositar()">Depositar</button>
     <button class="btn red" onclick="sacar()">Sacar</button>
 
+    <!-- NAV -->
+    <div class="nav">
+      <button onclick="ir('wallet.html')">Carteira</button>
+      <button onclick="ir('loan.html')">Empréstimo</button>
+      <button onclick="ir('vault.html')">Cofre</button>
+      <button onclick="ir('history.html')">Histórico</button>
+    </div>
+
     <button class="btn gray" onclick="logout()">Sair</button>
+
+    <!-- FOTO -->
+    <input type="file" id="upload" accept="image/*">
 
   </div>
 
 </div>
 
-<script>
-let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-let logado = localStorage.getItem("logado");
+<script src="js/app.js"></script>
 
+<script>
 function gerarNumero() {
   return Math.floor(Math.random() * 900 + 100);
 }
@@ -63,6 +73,7 @@ function gerarIGG() {
   return 'IGG-' + Math.random().toString(36).substring(2, 10).toUpperCase();
 }
 
+/* CARREGAR USUÁRIO */
 let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 let logado = localStorage.getItem("logado");
 
@@ -72,24 +83,19 @@ if (!userAtual) {
   window.location.href = "index.html";
 }
 
-/* CORREÇÃO AUTOMÁTICA */
+/* AUTO FIX */
+if (!userAtual.saldo) userAtual.saldo = 0;
 if (!userAtual.igg) userAtual.igg = gerarIGG();
 if (!userAtual.cartao) userAtual.cartao = gerarCartao();
 if (!userAtual.foto) userAtual.foto = "";
 
-localStorage.setItem("usuarios", JSON.stringify(usuarios));
+salvar();
 
-if (!userAtual) {
-  window.location.href = "index.html";
-}
-
-/* DADOS */
+/* UI */
 document.getElementById("userNome").innerText = userAtual.user;
 document.getElementById("saldo").innerText = userAtual.saldo;
 document.getElementById("igg").innerText = userAtual.igg;
 document.getElementById("numCartao").innerText = userAtual.cartao;
-
-/* DATA */
 document.getElementById("data").innerText = new Date().toLocaleString();
 
 /* FOTO */
@@ -97,6 +103,8 @@ const foto = document.getElementById("foto");
 
 if (userAtual.foto) {
   foto.src = userAtual.foto;
+} else {
+  foto.src = "https://via.placeholder.com/100";
 }
 
 document.getElementById("upload").addEventListener("change", function(e) {
@@ -134,7 +142,10 @@ function sacar() {
   let valor = Number(document.getElementById("valor").value);
   if (valor <= 0) return;
 
-  if (userAtual.saldo < valor) return;
+  if (userAtual.saldo < valor) {
+    alert("Saldo insuficiente");
+    return;
+  }
 
   userAtual.saldo -= valor;
   salvar();
@@ -144,6 +155,10 @@ function sacar() {
 function logout() {
   localStorage.removeItem("logado");
   window.location.href = "index.html";
+}
+
+function ir(pagina) {
+  window.location.href = pagina;
 }
 </script>
 

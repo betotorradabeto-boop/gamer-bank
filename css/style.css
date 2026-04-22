@@ -120,4 +120,26 @@ h3 {
   .card {
     border-radius: 15px;
   }
+
+  /* FOTO */
+.foto {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: block;
+  margin: 10px auto;
+  object-fit: cover;
+}
+
+/* CARTÃO */
+.cartao {
+  background: linear-gradient(135deg, #6a5cff, #8f7bff);
+  padding: 15px;
+  border-radius: 15px;
+  color: white;
+  margin: 15px 0;
+  text-align: center;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
 }

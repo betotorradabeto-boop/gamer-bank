@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gamer Bank</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+.tabs{display:flex;margin-bottom:15px;}
+.tab{
+    flex:1;
+    padding:10px;
+    text-align:center;
+    cursor:pointer;
+    background:#ccc;
+}
+.tab.active{
+    background:#6c63ff;
+    color:white;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="tabs">
+    <div class="tab active" onclick="trocar('login', this)">Login</div>
+    <div class="tab" onclick="trocar('registro', this)">Criar Conta</div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginBox">
+    <input id="loginUser" placeholder="Usuário">
+    <input id="loginPass" type="password" placeholder="Senha">
+    <button onclick="login()">Entrar</button>
+</div>
+
+<!-- REGISTRO -->
+<div id="registerBox" style="display:none;">
+    <input id="regUser" placeholder="Usuário">
+    <input id="regPass" type="password" placeholder="Senha">
+    <button onclick="criar()">Criar Conta</button>
+</div>
+
+<p id="msg"></p>
+
+</div>
+
+<script src="js/app.js"></script>
+
+<script>
+
+// 🔄 ABAS
+function trocar(tipo, el){
+    document.getElementById("loginBox").style.display = tipo==="login"?"block":"none";
+    document.getElementById("registerBox").style.display = tipo==="registro"?"block":"none";
+
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+    el.classList.add("active");
+}
+
+// 🔐 VALIDAR
+function validar(user, pass){
+    const userRegex = /^[a-zA-Z0-9]{1,15}$/;
+    const passRegex = /^[a-zA-Z0-9]{1,10}$/;
+
+    if(!userRegex.test(user)) return "Usuário inválido";
+    if(!passRegex.test(pass)) return "Senha inválida";
+
+    return null;
+}
+
+// 📦 STORAGE
+function getContas(){
+    return JSON.parse(localStorage.getItem("contas")) || {};
+}
+
+function setContas(contas){
+    localStorage.setItem("contas", JSON.stringify(contas));
+}
+
+// 🔑 LOGIN
+function login(){
+    let u = document.getElementById("loginUser").value.trim();
+    let p = document.getElementById("loginPass").value.trim();
+
+    let contas = getContas();
+
+    if(contas[u] && contas[u].senha === p){
+        localStorage.setItem("logado", u);
+        window.location.href = "home.html";
+    }else{
+        msg("Usuário ou senha incorretos");
+    }
+}
+
+// 🆕 CRIAR CONTA
+function criar(){
+    let u = document.getElementById("regUser").value.trim();
+    let p = document.getElementById("regPass").value.trim();
+
+    let erro = validar(u,p);
+    if(erro){
+        msg(erro);
+        return;
+    }
+
+    let contas = getContas();
+
+    if(contas[u]){
+        msg("Usuário já existe");
+        return;
+    }
+
+    contas[u] = {
+        senha: p,
+        saldo: 0,
+        historico: [],
+        emprestimo: null,
+        cofrinho: {saldo:0, ultima: Date.now()},
+        igg: gerarIGG()
+    };
+
+    setContas(contas);
+
+    msg("Conta criada com sucesso!", true);
+}
+
+// 💬 MSG
+function msg(t, ok=false){
+    let el = document.getElementById("msg");
+    el.innerText = t;
+    el.style.color = ok ? "green" : "red";
+}
+
+</script>
+
+</body>
+</html>

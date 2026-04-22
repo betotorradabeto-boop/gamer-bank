@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="container">
+<h2>Histórico</h2>
+<div id="lista"></div>
+
+<button onclick="voltar()">Voltar</button>
+</div>
+
+<script src="js/app.js"></script>
+<script>
+let html="";
+contas[user].historico.forEach(t=>{
+    html+=`<p>${t.tipo} ${t.valor} (${t.data})</p>`;
+});
+lista.innerHTML=html;
+
+function voltar(){location="home.html";}
+</script>
+
+</body>
+</html>

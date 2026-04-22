@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h2>Cofrinho</h2>
+
+<input id="valor" placeholder="Valor">
+
+<button onclick="guardar()">Guardar</button>
+<button onclick="retirar()">Retirar</button>
+
+<p id="saldo"></p>
+
+<button onclick="voltar()">Voltar</button>
+
+</div>
+
+<script src="js/app.js"></script>
+<script>
+
+function render(){
+    saldo.innerText="Cofre: "+contas[user].cofrinho.saldo.toFixed(2);
+}
+
+function guardar(){
+    let v=parseFloat(valor.value);
+
+    if(contas[user].saldo>=v){
+        contas[user].saldo-=v;
+        contas[user].cofrinho.saldo+=v;
+        salvar();
+        render();
+    }
+}
+
+function retirar(){
+    let v=parseFloat(valor.value);
+
+    if(contas[user].cofrinho.saldo>=v){
+        contas[user].cofrinho.saldo-=v;
+        contas[user].saldo+=v;
+        salvar();
+        render();
+    }
+}
+
+render();
+
+function voltar(){location="home.html";}
+</script>
+
+</body>
+</html>

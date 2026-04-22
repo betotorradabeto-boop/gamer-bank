@@ -32,20 +32,22 @@
 <script src="js/app.js"></script>
 
 <script>
+function gerarNumero() {
+  return Math.floor(Math.random() * 900 + 100);
+}
+
+function gerarCartao() {
+  return `${gerarNumero()}-${gerarNumero()}-${gerarNumero()}-${Math.floor(Math.random()*90+10)}`;
+}
+
+function gerarIGG() {
+  return 'IGG-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+}
+
 function criarConta() {
   const user = document.getElementById("user").value.trim();
   const senha = document.getElementById("senha").value.trim();
   const msg = document.getElementById("msg");
-
-  if (user.length < 1 || user.length > 15) {
-    msg.innerText = "Usuário inválido";
-    return;
-  }
-
-  if (senha.length < 1 || senha.length > 10) {
-    msg.innerText = "Senha inválida";
-    return;
-  }
 
   let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
@@ -55,16 +57,18 @@ function criarConta() {
   }
 
   usuarios.push({
-    user: user,
-    senha: senha,
+    user,
+    senha,
     saldo: 0,
-    historico: []
+    historico: [],
+    igg: gerarIGG(),
+    cartao: gerarCartao(),
+    foto: ""
   });
 
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
 
   msg.innerText = "Conta criada!";
-  msg.style.color = "green";
 }
 </script>
 

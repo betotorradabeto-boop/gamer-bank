@@ -51,7 +51,33 @@
 let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 let logado = localStorage.getItem("logado");
 
+function gerarNumero() {
+  return Math.floor(Math.random() * 900 + 100);
+}
+
+function gerarCartao() {
+  return `${gerarNumero()}-${gerarNumero()}-${gerarNumero()}-${Math.floor(Math.random()*90+10)}`;
+}
+
+function gerarIGG() {
+  return 'IGG-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+}
+
+let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+let logado = localStorage.getItem("logado");
+
 const userAtual = usuarios.find(u => u.user === logado);
+
+if (!userAtual) {
+  window.location.href = "index.html";
+}
+
+/* CORREÇÃO AUTOMÁTICA */
+if (!userAtual.igg) userAtual.igg = gerarIGG();
+if (!userAtual.cartao) userAtual.cartao = gerarCartao();
+if (!userAtual.foto) userAtual.foto = "";
+
+localStorage.setItem("usuarios", JSON.stringify(usuarios));
 
 if (!userAtual) {
   window.location.href = "index.html";

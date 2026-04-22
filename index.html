@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gamer Bank - Login</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="container">
+  
+  <h1 class="title">Gamer Bank</h1>
+
+  <div class="card">
+
+    <div class="tabs">
+      <button class="active">Login</button>
+      <a href="register.html"><button>Criar Conta</button></a>
+    </div>
+
+    <input type="text" id="user" placeholder="Usuário">
+    <input type="password" id="senha" placeholder="Senha">
+
+    <button class="btn" onclick="login()">Entrar</button>
+
+    <p id="msg"></p>
+
+  </div>
+
+</div>
+
+<!-- JS -->
+<script src="js/app.js"></script>
+
+<script>
+function login() {
+  const user = document.getElementById("user").value;
+  const senha = document.getElementById("senha").value;
+  const msg = document.getElementById("msg");
+
+  let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+  const existe = usuarios.find(u => u.user === user && u.senha === senha);
+
+  if (existe) {
+    localStorage.setItem("logado", user);
+    window.location.href = "home.html";
+  } else {
+    msg.innerText = "Usuário ou senha incorretos.";
+    msg.style.color = "red";
+  }
+}
+</script>
+
+</body>
+</html>

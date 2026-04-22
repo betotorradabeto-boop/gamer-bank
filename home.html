@@ -1,22 +1,39 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home</title>
 
-  <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
 <div class="container">
 
-  <h1 class="title">Gamer Bank</h1>
-
   <div class="card">
 
+    <!-- FOTO -->
+    <img id="foto" class="foto">
+
+    <input type="file" id="upload" accept="image/*">
+
+    <!-- NOME -->
     <h2 id="userNome"></h2>
+
+    <!-- IGG -->
+    <p id="igg"></p>
+
+    <!-- CARTÃO -->
+    <div class="cartao">
+      <p id="numCartao"></p>
+    </div>
+
+    <!-- DATA -->
+    <p id="data"></p>
+
+    <!-- SALDO -->
     <h3>Saldo: <span id="saldo">0</span> WUP</h3>
 
     <input type="number" id="valor" placeholder="Valor">
@@ -26,13 +43,9 @@
 
     <button class="btn gray" onclick="logout()">Sair</button>
 
-    <p id="msg"></p>
-
   </div>
 
 </div>
-
-<script src="js/app.js"></script>
 
 <script>
 let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
@@ -44,9 +57,36 @@ if (!userAtual) {
   window.location.href = "index.html";
 }
 
-document.getElementById("userNome").innerText = "Olá, " + userAtual.user;
+/* DADOS */
+document.getElementById("userNome").innerText = userAtual.user;
 document.getElementById("saldo").innerText = userAtual.saldo;
+document.getElementById("igg").innerText = userAtual.igg;
+document.getElementById("numCartao").innerText = userAtual.cartao;
 
+/* DATA */
+document.getElementById("data").innerText = new Date().toLocaleString();
+
+/* FOTO */
+const foto = document.getElementById("foto");
+
+if (userAtual.foto) {
+  foto.src = userAtual.foto;
+}
+
+document.getElementById("upload").addEventListener("change", function(e) {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function() {
+    userAtual.foto = reader.result;
+    salvar();
+    foto.src = reader.result;
+  }
+
+  reader.readAsDataURL(file);
+});
+
+/* FUNÇÕES */
 function salvar() {
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
 }
@@ -57,39 +97,20 @@ function atualizar() {
 
 function depositar() {
   let valor = Number(document.getElementById("valor").value);
-
   if (valor <= 0) return;
 
   userAtual.saldo += valor;
-
-  userAtual.historico.push({
-    tipo: "Depósito",
-    valor: valor,
-    data: new Date().toLocaleString()
-  });
-
   salvar();
   atualizar();
 }
 
 function sacar() {
   let valor = Number(document.getElementById("valor").value);
-
   if (valor <= 0) return;
 
-  if (userAtual.saldo < valor) {
-    document.getElementById("msg").innerText = "Saldo insuficiente";
-    return;
-  }
+  if (userAtual.saldo < valor) return;
 
   userAtual.saldo -= valor;
-
-  userAtual.historico.push({
-    tipo: "Saque",
-    valor: valor,
-    data: new Date().toLocaleString()
-  });
-
   salvar();
   atualizar();
 }

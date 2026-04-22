@@ -1,51 +1,123 @@
-body {
+/* RESET */
+* {
   margin: 0;
-  font-family: Arial;
-  background: #0f0f0f;
-  color: white;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* FUNDO */
+body {
+  background: linear-gradient(135deg, #e9e9f3, #dcdcec);
   height: 100vh;
 }
 
-.card {
-  background: #1c1c1c;
+/* CONTAINER CENTRAL */
+.container {
+  max-width: 420px;
+  margin: auto;
   padding: 20px;
-  border-radius: 10px;
-  width: 300px;
-  text-align: center;
 }
 
+/* TÍTULO */
 .title {
   text-align: center;
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: #2c2c2c;
 }
 
+/* CARD PRINCIPAL */
+.card {
+  background: #f5f5fb;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 
+    10px 10px 20px rgba(0,0,0,0.1),
+    -10px -10px 20px rgba(255,255,255,0.8);
+}
+
+/* INPUTS */
 input {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+  padding: 14px;
+  margin-bottom: 12px;
+  border-radius: 12px;
   border: none;
-  border-radius: 5px;
+  background: #e6e6f0;
+  box-shadow: inset 4px 4px 8px rgba(0,0,0,0.1),
+              inset -4px -4px 8px rgba(255,255,255,0.8);
+  font-size: 16px;
 }
 
+/* BOTÃO PADRÃO */
 .btn {
   width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  background: #00ff88;
+  padding: 14px;
+  border-radius: 14px;
   border: none;
-  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  margin-top: 10px;
   cursor: pointer;
+  background: linear-gradient(135deg, #6a5cff, #8f7bff);
+  box-shadow: 0 4px 15px rgba(106, 92, 255, 0.4);
 }
 
+/* BOTÃO VERMELHO */
 .red {
-  background: #ff4444;
+  background: linear-gradient(135deg, #ff5c5c, #ff7b7b);
+  box-shadow: 0 4px 15px rgba(255, 92, 92, 0.4);
 }
 
+/* BOTÃO CINZA */
 .gray {
-  background: #666;
+  background: #c7c7d9;
+  color: #333;
+}
+
+/* TABS (LOGIN / CRIAR CONTA) */
+.tabs {
+  display: flex;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  background: #dcdcec;
+  color: #555;
+}
+
+.tabs .active {
+  background: linear-gradient(135deg, #6a5cff, #8f7bff);
+  color: white;
+}
+
+/* TEXTO */
+h2 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+h3 {
+  margin-bottom: 15px;
+  color: #555;
+}
+
+/* RESPONSIVO */
+@media (max-width: 480px) {
+  .container {
+    padding: 15px;
+  }
+
+  .card {
+    border-radius: 15px;
+  }
 }

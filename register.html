@@ -1,35 +1,33 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Criar Conta</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criar Conta</title>
 
-  <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
 <div class="container">
-  
-  <h1 class="title">Criar Conta</h1>
 
   <div class="card">
 
-    <input type="text" id="user" placeholder="Usuário (até 15)">
-    <input type="password" id="senha" placeholder="Senha (até 10)">
+    <h2>Criar Conta</h2>
 
-    <button class="btn" onclick="criarConta()">Criar</button>
+    <input type="text" id="user" placeholder="Usuário (máx 15)" maxlength="15">
+    <input type="password" id="pass" placeholder="Senha (máx 10)" maxlength="10">
 
-    <p id="msg"></p>
+    <button class="btn" onclick="criarConta()">Criar Conta</button>
 
-    <a href="index.html">Voltar</a>
+    <button class="btn gray" onclick="voltar()">Voltar</button>
+
+    <p id="msg" class="msg"></p>
 
   </div>
 
 </div>
-
-<script src="js/app.js"></script>
 
 <script>
 function gerarNumero() {
@@ -45,20 +43,41 @@ function gerarIGG() {
 }
 
 function criarConta() {
-  const user = document.getElementById("user").value.trim();
-  const senha = document.getElementById("senha").value.trim();
-  const msg = document.getElementById("msg");
+  let user = document.getElementById("user").value.trim();
+  let pass = document.getElementById("pass").value.trim();
+  let msg = document.getElementById("msg");
+
+  /* VALIDAÇÃO */
+  if (!user || !pass) {
+    msg.innerText = "Preencha todos os campos";
+    msg.style.color = "red";
+    return;
+  }
+
+  if (!/^[a-zA-Z0-9]+$/.test(user)) {
+    msg.innerText = "Usuário só pode ter letras e números";
+    msg.style.color = "red";
+    return;
+  }
+
+  if (!/^[a-zA-Z0-9]+$/.test(pass)) {
+    msg.innerText = "Senha só pode ter letras e números";
+    msg.style.color = "red";
+    return;
+  }
 
   let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
   if (usuarios.find(u => u.user === user)) {
     msg.innerText = "Usuário já existe";
+    msg.style.color = "red";
     return;
   }
 
+  /* CRIAR CONTA */
   usuarios.push({
-    user,
-    senha,
+    user: user,
+    pass: pass,
     saldo: 0,
     historico: [],
     igg: gerarIGG(),
@@ -68,7 +87,16 @@ function criarConta() {
 
   localStorage.setItem("usuarios", JSON.stringify(usuarios));
 
-  msg.innerText = "Conta criada!";
+  msg.innerText = "Conta criada com sucesso!";
+  msg.style.color = "green";
+
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, 1200);
+}
+
+function voltar() {
+  window.location.href = "index.html";
 }
 </script>
 

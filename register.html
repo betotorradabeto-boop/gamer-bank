@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Conta</title>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="container">
+  
+  <h1 class="title">Criar Conta</h1>
+
+  <div class="card">
+
+    <input type="text" id="user" placeholder="Usuário (até 15)">
+    <input type="password" id="senha" placeholder="Senha (até 10)">
+
+    <button class="btn" onclick="criarConta()">Criar</button>
+
+    <p id="msg"></p>
+
+    <a href="index.html">Voltar</a>
+
+  </div>
+
+</div>
+
+<script src="js/app.js"></script>
+
+<script>
+function criarConta() {
+  const user = document.getElementById("user").value.trim();
+  const senha = document.getElementById("senha").value.trim();
+  const msg = document.getElementById("msg");
+
+  if (user.length < 1 || user.length > 15) {
+    msg.innerText = "Usuário inválido";
+    return;
+  }
+
+  if (senha.length < 1 || senha.length > 10) {
+    msg.innerText = "Senha inválida";
+    return;
+  }
+
+  let usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+  if (usuarios.find(u => u.user === user)) {
+    msg.innerText = "Usuário já existe";
+    return;
+  }
+
+  usuarios.push({
+    user: user,
+    senha: senha,
+    saldo: 0,
+    historico: []
+  });
+
+  localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+  msg.innerText = "Conta criada!";
+  msg.style.color = "green";
+}
+</script>
+
+</body>
+</html>
